@@ -1,0 +1,21 @@
+{
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "search.exclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "workbench.colorCustomizations": {
+    "sash.hoverBorder": "#d49517",
+    "statusBar.background": "#a67512",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#d49517",
+    "statusBarItem.remoteBackground": "#a67512",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "tab.activeBorder": "#d49517"
+  },
+  "peacock.color": "#a67512"
+}
