@@ -15,21 +15,23 @@ const todos = [
   },
 ]
 
-export const Route = createFileRoute('/demo/api/tq-todos')({
+export const Route = createFileRoute("/demo/api/tq-todos")({
   server: {
     handlers: {
+      // GET endpoint
       GET: () => {
-        return Response.json(todos)
+        return Response.json(todos);
       },
+      // POST endpoint
       POST: async ({ request }) => {
-        const name = await request.json()
+        const name = await request.json();
         const todo = {
           id: todos.length + 1,
           name,
-        }
-        todos.push(todo)
-        return Response.json(todo)
+        };
+        todos.push(todo);
+        return Response.json(todo);
       },
     },
   },
-})
+});

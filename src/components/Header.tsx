@@ -72,7 +72,7 @@ export default function Header() {
           {/* Demo Links Start */}
 
           <Link
-            to="/demo/start/server-funcs"
+            to="/todos/server-funcs"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
             activeProps={{
@@ -170,7 +170,7 @@ export default function Header() {
           )}
 
           <Link
-            to="/demo/tanstack-query"
+            to="/tanstack-query"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
             activeProps={{
