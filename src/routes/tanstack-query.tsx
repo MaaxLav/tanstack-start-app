@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const Route = createFileRoute("/tanstack-query")({
   component: TanStackQueryDemo,
@@ -13,7 +13,7 @@ type Todo = {
 
 function TanStackQueryDemo() {
   //* USE OF Tanstack Query - is best for dynamic data that changes often(dashboards, etc)
-
+  const queryClient = useQueryClient();
   //? useQuery
   // used for fetching, caching, synchronizing(refetching) data
   const { data, refetch } = useQuery<Todo[]>({
@@ -22,6 +22,7 @@ function TanStackQueryDemo() {
     // to create api route just create a file in routes and start it with api.(api.names as example)
     queryFn: () => fetch("/demo/api/tq-todos").then((res) => res.json()),
     initialData: [],
+    staleTime: 1000 * 60 * 1, // 1 minutes(for one minute it will take data from cache and then it will allow to refetch data when component mounts or manually by calling refetch)
   });
 
   //? useMutation
@@ -32,7 +33,24 @@ function TanStackQueryDemo() {
         method: "POST",
         body: JSON.stringify(todo),
       }).then((res) => res.json()),
-    onSuccess: () => refetch(),
+    //? manual refetch after mutation
+    onSuccess: () => {
+      refetch();
+      //? if it would be separate component we could use
+      // queryClient.invalidateQueries({queryKey: ['todos']}) to refetch the data
+    },
+    //? optimistic update
+    onMutate: async (newTodo) => {
+      await queryClient.cancelQueries({ queryKey: ["todos"] });
+      queryClient.setQueryData(["todos"], (pV: any[]) => [...pV, newTodo]);
+      const previousTodos = queryClient.getQueryData(["todos"]);
+
+      return { previousTodos };
+    },
+    // in case of server error rollback to previous data
+    onError: (err, newTodo, context) => {
+      queryClient.setQueryData(["todos"], context?.previousTodos);
+    },
   });
 
   const [todo, setTodo] = useState("");
